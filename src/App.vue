@@ -1,42 +1,48 @@
 <template>
   <div id="app">
-    <div class="color-table">
+    <filter-control class="section" />
+    <section class="section color-table">
       <color-group />
       <color-group
         v-for="g in groups"
         :key="g"
         :hue-min="g"
-        :hue-max="g + deg"
+        :hue-max="g + hueStep"
       />
-    </div>
+    </section>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import ColorGroup from './components/ColorGroup.vue'
+import store from '@/store'
+import ColorGroup from '@/components/ColorGroup.vue'
+import FilterControl from '@/components/FilterControl.vue'
 
 export default Vue.extend({
   name: 'App',
-  components: { ColorGroup },
+  components: { ColorGroup, FilterControl },
   computed: {
-    deg: () => 30,
+    hueStep: () => store.hueStep,
     groups(): number[] {
-      return Array.from({ length: 360 / this.deg }, (v, i) => i * this.deg)
+      return Array.from(
+        { length: Math.ceil(360 / this.hueStep) },
+        (_, i) => i * this.hueStep,
+      )
     },
   },
 })
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
+} */
 .color-table {
   display: flex;
   width: 100%;

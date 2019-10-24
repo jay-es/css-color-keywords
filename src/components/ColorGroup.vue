@@ -1,7 +1,7 @@
 <template>
   <div class="color-group">
     {{ title }}<br />
-    <color-cell v-for="(c, i) in colors" :key="i" :color="c" />
+    <color-cell v-for="c in colors" :key="c.name" :color="c" />
   </div>
 </template>
 
