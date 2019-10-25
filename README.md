@@ -1,4 +1,4 @@
-# css-colors
+# css-color-keywords
 
 ## Project setup
 ```
