@@ -41,7 +41,7 @@ export default Vue.extend({
       )
     },
     filtered(): Color[] {
-      return this.groupColors.filter(({ hsl, level }) => {
+      return this.groupColors.filter(({ hex, hsl, level }, i, a) => {
         if (hsl[1] > store.satRange[1] || hsl[1] < store.satRange[0]) {
           return false
         }
@@ -54,7 +54,15 @@ export default Vue.extend({
           return false
         }
 
-        return store.cssLevel.some(v => level.includes(v))
+        if (!store.cssLevel.some(lv => level.includes(lv))) {
+          return false
+        }
+
+        if (!store.showSyn && a.findIndex(v => v.hex === hex) !== i) {
+          return false
+        }
+
+        return true
       })
     },
     title(): string {

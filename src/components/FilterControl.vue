@@ -18,7 +18,7 @@
         <b-radio v-model="dispProp" native-value="hex">RGB Hex</b-radio>
         <b-radio v-model="dispProp" native-value="hsl">HSL</b-radio>
       </div>
-      <div class="field">
+      <div class="block">
         <label class="label">CSS Level</label>
         <b-checkbox v-model="cssLevel" native-value="Level 1">
           Level 1
@@ -32,6 +32,11 @@
         <b-checkbox v-model="cssLevel" native-value="Level 4">
           Level 4
         </b-checkbox>
+      </div>
+      <div class="field">
+        <b-switch v-model="showSyn">
+          Show Synonyms
+        </b-switch>
       </div>
     </div>
   </div>
@@ -64,6 +69,16 @@ export default Vue.extend({
       get: () => store.satRange,
       set: v => (store.satRange = v),
     },
+    showSyn: {
+      get: () => store.showSyn,
+      set: v => (store.showSyn = v),
+    },
   },
 })
 </script>
+
+<style scoped>
+.switch >>> .check {
+  font-size: 85%;
+}
+</style>

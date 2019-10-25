@@ -8,4 +8,5 @@ export default Vue.observable({
   hueStep: 30,
   litRange: [0, 100] as Range,
   satRange: [0, 100] as Range,
+  showSyn: false,
 })
