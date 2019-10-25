@@ -1,5 +1,5 @@
 <template>
-  <div class="color-cell" :class="isVisible || 'is-hidden'" :style="style">
+  <div class="color-cell" :style="style">
     {{ display }}
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import store from '@/store'
-import { Color } from '@/store/colors'
+import { Color } from '@/store/colorList'
 
 export default Vue.extend({
   name: 'ColorCell',
@@ -21,23 +21,6 @@ export default Vue.extend({
     display() {
       const val = this.color[store.dispProp]
       return Array.isArray(val) ? val.join(',') : val
-    },
-    isVisible() {
-      const { hsl, level } = this.color as Color
-
-      if (hsl[1] > store.satRange[1] || hsl[1] < store.satRange[0]) {
-        return false
-      }
-
-      if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
-        return false
-      }
-
-      if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
-        return false
-      }
-
-      return store.cssLevel.some(v => level.includes(v))
     },
     style() {
       const color = this.color as Color
@@ -60,5 +43,6 @@ export default Vue.extend({
   height: 2em;
   font-size: 12px;
   line-height: 1;
+  word-break: break-all;
 }
 </style>

@@ -1,12 +1,16 @@
 <template>
   <div class="color-group">
-    {{ title }}<br />
-    <color-cell v-for="c in colors" :key="c.name" :color="c" />
+    <p class="color-group-label">
+      {{ title }}<br />
+      <small class="has-text-grey">({{ filtered.length }})</small>
+    </p>
+    <color-cell v-for="c in filtered" :key="c.name" :color="c" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import store from '@/store'
 import colorList, { Color } from '@/store/colorList'
 import ColorCell from './ColorCell.vue'
 
@@ -27,7 +31,7 @@ export default Vue.extend({
     isMono(): boolean {
       return !this.hueMin && !this.hueMax
     },
-    colors(): Color[] {
+    groupColors(): Color[] {
       if (this.isMono) {
         return colorList.filter(v => v.hsl[1] === 0)
       }
@@ -35,6 +39,23 @@ export default Vue.extend({
       return colorList.filter(
         v => v.hsl[1] && v.hsl[0] >= this.hueMin && v.hsl[0] < this.hueMax,
       )
+    },
+    filtered(): Color[] {
+      return this.groupColors.filter(({ hsl, level }) => {
+        if (hsl[1] > store.satRange[1] || hsl[1] < store.satRange[0]) {
+          return false
+        }
+
+        if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
+          return false
+        }
+
+        if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
+          return false
+        }
+
+        return store.cssLevel.some(v => level.includes(v))
+      })
     },
     title(): string {
       return this.isMono ? 'Mono' : `${this.hueMin}~`
@@ -46,6 +67,9 @@ export default Vue.extend({
 <style>
 .color-group {
   flex: 1;
-  word-break: break-all;
+}
+.color-group-label {
+  padding-bottom: 0.5em;
+  line-height: 1;
 }
 </style>
