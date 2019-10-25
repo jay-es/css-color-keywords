@@ -2,16 +2,16 @@
   <div class="columns is-tablet">
     <div class="column">
       <b-field label="Saturation Range">
-        <b-slider v-model="satRange" :min="0" :max="100" :step="5" />
+        <b-slider v-model="satRange" :min="0" :max="100" :step="5" rounded />
       </b-field>
       <b-field label="Lightness Range">
-        <b-slider v-model="litRange" :min="0" :max="100" :step="5" />
+        <b-slider v-model="litRange" :min="0" :max="100" :step="5" rounded />
       </b-field>
       <b-field label="Hue Step">
-        <b-slider v-model="hueStep" :min="20" :max="90" :step="5" />
+        <b-slider v-model="hueStep" :min="20" :max="90" :step="5" rounded />
       </b-field>
     </div>
-    <div class="column">
+    <div class="column is-narrow">
       <div class="field">
         <label class="label">Display</label>
         <b-radio v-model="dispProp" native-value="keyword">Keyword</b-radio>
@@ -78,6 +78,16 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+@media (min-width: 769px) {
+  .column:nth-child(2) {
+    margin-left: 1em;
+  }
+}
+
+.b-radio:nth-last-child(n + 2),
+.b-checkbox:nth-last-child(n + 2) {
+  margin-right: 0.5em;
+}
 .switch >>> .check {
   font-size: 85%;
 }

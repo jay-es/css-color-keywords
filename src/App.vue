@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="section">
     <h1 class="h1 is-size-1 has-text-centered">CSS Color Keywords</h1>
-    <filter-control class="container is-fluid" />
+    <section class="container filter-control">
+      <filter-control />
+    </section>
     <section class="container is-fluid color-table">
       <color-group />
       <color-group
@@ -40,9 +42,12 @@ export default Vue.extend({
   margin: -0.5em 0 0.5em;
 }
 
+.container.filter-control {
+  margin-bottom: 25px;
+  max-width: 680px;
+}
 .color-table {
   display: flex;
-  width: 100%;
   text-align: center;
 }
 </style>
