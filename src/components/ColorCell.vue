@@ -40,7 +40,7 @@ export default Vue.extend({
   margin: -1px;
   padding: 0.25em;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 2em;
+  height: 2.5em;
   font-size: 12px;
   line-height: 1;
   word-break: break-all;

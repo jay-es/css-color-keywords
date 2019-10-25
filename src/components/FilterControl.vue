@@ -12,13 +12,13 @@
       </b-field>
     </div>
     <div class="column">
-      <div class="block">
+      <div class="field">
         <label class="label">Display</label>
-        <b-radio v-model="dispProp" native-value="name">Name</b-radio>
+        <b-radio v-model="dispProp" native-value="keyword">Keyword</b-radio>
         <b-radio v-model="dispProp" native-value="hex">RGB Hex</b-radio>
         <b-radio v-model="dispProp" native-value="hsl">HSL</b-radio>
       </div>
-      <div class="block">
+      <div class="field">
         <label class="label">CSS Level</label>
         <b-checkbox v-model="cssLevel" native-value="Level 1">
           Level 1
@@ -67,15 +67,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style>
-.color-cell {
-  position: relative;
-  margin: -1px;
-  padding: 0.25em;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 2em;
-  font-size: 12px;
-  line-height: 1;
-}
-</style>
