@@ -44,35 +44,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import store from '@/store'
+import { getAndSetState } from '@/store'
 
 export default Vue.extend({
   name: 'FilterControl',
   computed: {
-    cssLevel: {
-      get: () => store.cssLevel,
-      set: v => (store.cssLevel = v),
-    },
-    dispProp: {
-      get: () => store.dispProp,
-      set: v => (store.dispProp = v),
-    },
-    hueStep: {
-      get: () => store.hueStep,
-      set: v => (store.hueStep = v),
-    },
-    litRange: {
-      get: () => store.litRange,
-      set: v => (store.litRange = v),
-    },
-    satRange: {
-      get: () => store.satRange,
-      set: v => (store.satRange = v),
-    },
-    showSyn: {
-      get: () => store.showSyn,
-      set: v => (store.showSyn = v),
-    },
+    cssLevel: getAndSetState('cssLevel'),
+    dispProp: getAndSetState('dispProp'),
+    hueStep: getAndSetState('hueStep'),
+    litRange: getAndSetState('litRange'),
+    satRange: getAndSetState('satRange'),
+    showSyn: getAndSetState('showSyn'),
   },
 })
 </script>

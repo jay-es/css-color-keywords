@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import store from '@/store'
+import { getState } from '@/store'
 import ColorGroup from '@/components/ColorGroup.vue'
 import FilterControl from '@/components/FilterControl.vue'
 
@@ -26,7 +26,7 @@ export default Vue.extend({
   name: 'App',
   components: { ColorGroup, FilterControl },
   computed: {
-    hueStep: () => store.hueStep,
+    hueStep: getState('hueStep'),
     groups(): number[] {
       return Array.from(
         { length: Math.ceil(360 / this.hueStep) },

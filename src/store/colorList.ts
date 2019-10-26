@@ -1,12 +1,5 @@
 /* eslint prettier/prettier: ["warn", { printWidth: 120 }] */
-export type Color = {
-  level: string
-  keyword: string
-  hex: string
-  hsl: [number, number, number]
-}
-
-const colorList: Color[] = [
+export default [
   { level: 'CSS Level 1', keyword: 'black', hex: '#000000', hsl: [0, 0, 0] },
   { level: 'CSS Level 1', keyword: 'silver', hex: '#c0c0c0', hsl: [0, 0, 75] },
   { level: 'CSS Level 1', keyword: 'gray', hex: '#808080', hsl: [0, 0, 50] },
@@ -155,6 +148,4 @@ const colorList: Color[] = [
   { level: 'CSS Color Module Level 3', keyword: 'whitesmoke', hex: '#f5f5f5', hsl: [0, 0, 96] },
   { level: 'CSS Color Module Level 3', keyword: 'yellowgreen', hex: '#9acd32', hsl: [80, 61, 50] },
   { level: 'CSS Color Module Level 4', keyword: 'rebeccapurple', hex: '#663399', hsl: [270, 50, 40] },
-]
-
-export default colorList.sort((a, b) => b.hsl[2] - a.hsl[2])
+].sort((a, b) => b.hsl[2] - a.hsl[2])

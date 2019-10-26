@@ -10,8 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import store from '@/store'
-import colorList, { Color } from '@/store/colorList'
+import { getState, Color } from '@/store'
 import ColorCell from './ColorCell.vue'
 
 export default Vue.extend({
@@ -28,37 +27,42 @@ export default Vue.extend({
     },
   },
   computed: {
+    colorList: getState('colorList'),
+    cssLevel: getState('cssLevel'),
+    litRange: getState('litRange'),
+    satRange: getState('satRange'),
+    showSyn: getState('showSyn'),
     isMono(): boolean {
       return !this.hueMin && !this.hueMax
     },
     groupColors(): Color[] {
       if (this.isMono) {
-        return colorList.filter(v => v.hsl[1] === 0)
+        return this.colorList.filter(v => v.hsl[1] === 0)
       }
 
-      return colorList.filter(
+      return this.colorList.filter(
         v => v.hsl[1] && v.hsl[0] >= this.hueMin && v.hsl[0] < this.hueMax,
       )
     },
     filtered(): Color[] {
       return this.groupColors.filter(({ hex, hsl, level }, i, a) => {
-        if (hsl[1] > store.satRange[1] || hsl[1] < store.satRange[0]) {
+        if (hsl[1] > this.satRange[1] || hsl[1] < this.satRange[0]) {
           return false
         }
 
-        if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
+        if (hsl[2] > this.litRange[1] || hsl[2] < this.litRange[0]) {
           return false
         }
 
-        if (hsl[2] > store.litRange[1] || hsl[2] < store.litRange[0]) {
+        if (hsl[2] > this.litRange[1] || hsl[2] < this.litRange[0]) {
           return false
         }
 
-        if (!store.cssLevel.some(lv => level.includes(lv))) {
+        if (!this.cssLevel.some(lv => level.includes(lv))) {
           return false
         }
 
-        if (!store.showSyn && a.findIndex(v => v.hex === hex) !== i) {
+        if (!this.showSyn && a.findIndex(v => v.hex === hex) !== i) {
           return false
         }
 
