@@ -4,16 +4,16 @@
       {{ title }}<br />
       <small class="has-text-grey">({{ filtered.length }})</small>
     </p>
-    <color-cell v-for="c in filtered" :key="c.name" :color="c" />
+    <color-cell v-for="c in filtered" :key="c.keyword" :color="c" />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { getState, Color } from '@/store'
+import { computed, createComponent } from '@vue/composition-api'
+import { getters } from '@/store'
 import ColorCell from './ColorCell.vue'
 
-export default Vue.extend({
+export default createComponent({
   name: 'ColorGroup',
   components: { ColorCell },
   props: {
@@ -26,52 +26,48 @@ export default Vue.extend({
       default: 0,
     },
   },
-  computed: {
-    colorList: getState('colorList'),
-    cssLevel: getState('cssLevel'),
-    litRange: getState('litRange'),
-    satRange: getState('satRange'),
-    showSyn: getState('showSyn'),
-    isMono(): boolean {
-      return !this.hueMin && !this.hueMax
-    },
-    groupColors(): Color[] {
-      if (this.isMono) {
-        return this.colorList.filter(v => v.hsl[1] === 0)
-      }
+  setup({ hueMax, hueMin }) {
+    const colorList = getters.colorList()
+    const cssLevel = computed(getters.cssLevel)
+    const litRange = computed(getters.litRange)
+    const satRange = computed(getters.satRange)
+    const showSyn = computed(getters.showSyn)
 
-      return this.colorList.filter(
-        v => v.hsl[1] && v.hsl[0] >= this.hueMin && v.hsl[0] < this.hueMax,
-      )
-    },
-    filtered(): Color[] {
-      return this.groupColors.filter(({ hex, hsl, level }, i, a) => {
-        if (hsl[1] > this.satRange[1] || hsl[1] < this.satRange[0]) {
+    const isMono = !hueMin && !hueMax
+    const title = isMono ? 'Mono' : `${hueMin}~`
+
+    const groupColors = isMono
+      ? colorList.filter(({ hsl: [, s] }) => s === 0)
+      : colorList.filter(({ hsl: [h, s] }) => !!s && h >= hueMin && h < hueMax)
+
+    const filtered = computed(() =>
+      groupColors.filter(({ hex, hsl, level }, i, a) => {
+        if (hsl[1] > satRange.value[1] || hsl[1] < satRange.value[0]) {
           return false
         }
 
-        if (hsl[2] > this.litRange[1] || hsl[2] < this.litRange[0]) {
+        if (hsl[2] > litRange.value[1] || hsl[2] < litRange.value[0]) {
           return false
         }
 
-        if (hsl[2] > this.litRange[1] || hsl[2] < this.litRange[0]) {
+        if (!cssLevel.value.some(lv => level.includes(lv))) {
           return false
         }
 
-        if (!this.cssLevel.some(lv => level.includes(lv))) {
-          return false
-        }
-
-        if (!this.showSyn && a.findIndex(v => v.hex === hex) !== i) {
+        if (!showSyn.value && a.findIndex(v => v.hex === hex) !== i) {
           return false
         }
 
         return true
-      })
-    },
-    title(): string {
-      return this.isMono ? 'Mono' : `${this.hueMin}~`
-    },
+      }),
+    )
+
+    return {
+      filtered,
+      groupColors,
+      isMono,
+      title,
+    }
   },
 })
 </script>

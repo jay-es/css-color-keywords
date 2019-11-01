@@ -17,22 +17,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { getState } from '@/store'
+import { computed, createComponent } from '@vue/composition-api'
+import { getters } from '@/store'
 import ColorGroup from '@/components/ColorGroup.vue'
 import FilterControl from '@/components/FilterControl.vue'
 
-export default Vue.extend({
+export default createComponent({
   name: 'App',
   components: { ColorGroup, FilterControl },
-  computed: {
-    hueStep: getState('hueStep'),
-    groups(): number[] {
-      return Array.from(
-        { length: Math.ceil(360 / this.hueStep) },
-        (_, i) => i * this.hueStep,
-      )
-    },
+  setup() {
+    const hueStep = computed(getters.hueStep)
+
+    return {
+      hueStep,
+      groups: computed(() =>
+        Array.from(
+          { length: Math.ceil(360 / hueStep.value) },
+          (_, i) => i * hueStep.value,
+        ),
+      ),
+    }
   },
 })
 </script>

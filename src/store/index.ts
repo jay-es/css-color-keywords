@@ -9,6 +9,13 @@ export type Color = {
 }
 type Range = [number, number]
 type State = typeof state
+type Getters = { [K in keyof State]: () => State[K] }
+type GetAndSetters = {
+  [K in keyof State]: {
+    get: () => State[K]
+    set: (newVal: State[K]) => State[K]
+  }
+}
 
 const state = {
   colorList: colorList as Color[],
@@ -22,11 +29,14 @@ const state = {
 
 Vue.observable(state)
 
-export const getState = <T extends keyof State>(key: T) => ({
-  get: (): State[T] => state[key],
-})
+export const getters = {} as Getters
+export const getAndSetters = {} as GetAndSetters
 
-export const getAndSetState = <T extends keyof State>(key: T) => ({
-  ...getState(key),
-  set: (v: State[T]) => (state[key] = v),
-})
+for (const key of Object.keys(state) as 'colorList'[]) {
+  getters[key] = () => state[key]
+
+  getAndSetters[key] = {
+    get: () => state[key],
+    set: (newVal: State[typeof key]) => (state[key] = newVal),
+  }
+}

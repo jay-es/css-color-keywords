@@ -5,29 +5,30 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import { getState, Color } from '@/store'
+import { computed, createComponent, ref } from '@vue/composition-api'
+import { getters, Color } from '@/store'
 
-export default Vue.extend({
+export default createComponent({
   name: 'ColorCell',
   props: {
     color: {
-      type: Object as PropType<Color>,
+      type: Object as () => Color,
       required: true,
     },
   },
-  computed: {
-    dispProp: getState('dispProp'),
-    display() {
-      const val = this.color[this.dispProp]
+  setup({ color }) {
+    const display = computed(() => {
+      const val = color[getters.dispProp()]
       return Array.isArray(val) ? val.join(',') : val
-    },
-    style() {
-      return {
-        'background-color': this.color.hex,
-        color: `hsla(0, 0%, ${this.color.hsl[2] > 45 ? 0 : 100}%, 0.75)`,
-      }
-    },
+    })
+
+    return {
+      display,
+      style: ref({
+        'background-color': color.hex,
+        color: `hsla(0, 0%, ${color.hsl[2] > 45 ? 0 : 100}%, 0.75)`,
+      }),
+    }
   },
 })
 </script>

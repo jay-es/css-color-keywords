@@ -43,19 +43,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { getAndSetState } from '@/store'
+import { computed, createComponent } from '@vue/composition-api'
+import { getAndSetters } from '@/store'
 
-export default Vue.extend({
+export default createComponent({
   name: 'FilterControl',
-  computed: {
-    cssLevel: getAndSetState('cssLevel'),
-    dispProp: getAndSetState('dispProp'),
-    hueStep: getAndSetState('hueStep'),
-    litRange: getAndSetState('litRange'),
-    satRange: getAndSetState('satRange'),
-    showSyn: getAndSetState('showSyn'),
-  },
+  setup: () => ({
+    cssLevel: computed(getAndSetters.cssLevel),
+    dispProp: computed(getAndSetters.dispProp),
+    hueStep: computed(getAndSetters.hueStep),
+    litRange: computed(getAndSetters.litRange),
+    satRange: computed(getAndSetters.satRange),
+    showSyn: computed(getAndSetters.showSyn),
+  }),
 })
 </script>
 
